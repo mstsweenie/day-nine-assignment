@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Rock Paper Scissors</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="rockpaperscissors.css" />
+    <!-- <script src="./rockpaperscissors.js"></script> -->
+</head>
+<body>
+    <header>
+        <h1 class="text-center">Rock Paper Scissors</h1>
+       <h2 class="text-center heading game">Game <span id="game">1</span></h2>
+       <div class="text-center container content">
+            <div class="text-center flex33">Wins: <span id="win">0</span></div>
+            <div class="text-center flex33">Ties: <span id="tie">0</span></div>
+            <div class="text-center flex33">Losses: <span id="loss">0</span></div>
+       </div>
+    </header>
+    <main>
+        <div class="content selection text-center" id="computer">The Computer Hasn't picked yet</div>
+        <div class="content selection text-center" id="user">You haven't picked yet</div>
+        <div class="content selection text-center" id="outcome"></div>
+        <div class="buttonContainer container content">
+            <button class="choice rock flex33" value="rock">Rock</button>
+            <button class="choice paper flex33"  value="paper">Paper</button>
+            <button class="choice scissors flex33"  value="scissors">Scissors</button>
+        </div>
+    </main>
+    <script>
+        
+        document.querySelector("button.rock").addEventListener("click", startNewGame);
+        document.querySelector("button.paper").addEventListener("click", startNewGame);
+        document.querySelector("button.scissors").addEventListener("click", startNewGame);
+        
+         // Count wins and cache the results
+        let wins = 0;
+
+        // Count loses and cache the results
+        let losses = 0;
+
+        // Count ties and cache the results
+        let ties = 0;
+
+        let games = 1;
+
+        function startNewGame(event) {
+            usersAnswer = event.target.value;
+            document.querySelector("#user").innerHTML = "You chose " + usersAnswer;
+
+            computersAnswer = document.querySelectorAll(".choice")[randomGenerator(3)].value;
+            document.querySelector("#computer").innerHTML = "The computer chose " + computersAnswer;
+
+            pickWinner(usersAnswer, computersAnswer);
+            gameOver();
+        }
+
+        function randomGenerator(max) {
+            return Math.floor(Math.random() * max);
+        }
+        
+        function gameOver(){
+            games++;
+            document.querySelector("#game").innerHTML = games;
+        }
+        
+        function pickWinner(userAnswer, computersAnswer) {
+            const outcomeEl = document.querySelector("#outcome");
+            const tieEl = document.querySelector("#tie");
+            const lossEl = document.querySelector("#loss");
+            const winEl = document.querySelector("#win");
+            const declareTie = "It's a tie!";
+            const declareWin = "You win!";
+            const declareLoss = "You lose.";
+            const paperCoversRock = "Paper covers rock.";
+            const rockCrushesScissors = "Rock crushes scissors.";
+            const scissorsCutsPaper = "Scissors cuts paper.";
+
+            if (computersAnswer === usersAnswer) {
+                ties++;
+                outcomeEl.innerHTML = declareTie;
+                tieEl.innerHTML = ties;
+            }
+
+            if (computersAnswer === "rock" && userAnswer === "paper" ) {
+                wins++;
+                outcomeEl.innerHTML = declareWin + " " + paperCoversRock;
+                winEl.innerHTML = wins;
+            }
+
+            if (computersAnswer === "rock" && userAnswer === "scissors") {
+                losses++;
+                outcomeEl.innerHTML = declareLoss + " " + rockCrushesScissors;
+                lossEl.innerHTML = losses;
+            }
+
+            if (computersAnswer === "paper" && userAnswer === "rock") {
+                losses++;
+                outcomeEl.innerHTML = declareLoss + " " + paperCoversRock;
+                lossEl.innerHTML = losses;
+            }
+
+            if (computersAnswer === "paper" && userAnswer === "scissors") {
+                wins++;
+                outcomeEl.innerHTML = declareWin + " " + scissorsCutsPaper;
+                winEl.innerHTML = wins;
+            }
+
+            if (computersAnswer === "scissors" && userAnswer === "rock") {
+                wins++;
+                outcomeEl.innerHTML = declareWin + " " + rockCrushesScissors;
+                winEl.innerHTML = wins;
+            }
+        
+            if (computersAnswer === "scissors" && userAnswer === "paper") {
+                losses++;
+                outcomeEl.innerHTML = declareLoss + " " + scissorsCutsPaper;
+                lossEl.innerHTML = losses;
+            }
+        }
+    </script>
+</body>
+</html>
